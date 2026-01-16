@@ -6,18 +6,15 @@
 <title>P1 – Assessment (minimal, buttons right)</title>
 
 <style>
-  /* FONT */
   @font-face{
     font-family:'Schoulschrëft';
     src:url('https://raw.githubusercontent.com/albrechtclaire1007/schoulschreft/main/schoulschreft_bold%5B2%5D.TTF') format('truetype');
     font-weight:bold; font-style:normal; font-display:swap;
   }
-
   :root{
     --pink-mid:#e4b7d0; --pink-light:#f6e4ee; --pink-dark:#d88cb8;
     --ink:#1f1f1f; --white:#fff; --ok:#b7f0c8; --bad:#ffcccc; --border:3px;
   }
-
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent; user-select:none; outline:none;}
   html,body{
     height:100%; margin:0;
@@ -26,7 +23,6 @@
     font-family:'Schoulschrëft', Arial, sans-serif;
   }
 
-  /* Top nav */
   .top{
     position:sticky; top:8px; z-index:10;
     display:flex; gap:12px; align-items:center; justify-content:center;
@@ -51,7 +47,7 @@
     font-family:'Schoulschrëft', Arial, sans-serif;
   }
   .iconBtn:active{ transform:scale(.98); }
-  .flow{opacity:.9; font-size:1rem; padding:0 .4rem; min-width:8ch; text-align:center;}
+  .flow{opacity:.9; font-size:1rem; padding:0 .4rem; min-width:6ch; text-align:center;}
   .hidden{display:none !important;}
 
   .wrap{
@@ -63,12 +59,8 @@
     padding:2.5vmin 3vmin 4vmin;
   }
 
-  /* RIGHT HUD (all controls on the right) */
-  .rightHud{
-    width:min(1220px,95vw);
-    display:flex;
-    justify-content:flex-end;
-  }
+  /* RIGHT HUD */
+  .rightHud{ width:min(1220px,95vw); display:flex; justify-content:flex-end; }
   .hudBox{
     display:flex;
     gap:10px;
@@ -81,7 +73,6 @@
     padding:10px 12px;
     box-shadow:0 8px 20px rgba(0,0,0,.07);
   }
-
   .timerCircle{
     width:64px; height:64px;
     border-radius:50%;
@@ -92,7 +83,6 @@
     box-shadow:0 8px 20px rgba(0,0,0,.08);
     font-size:1.15rem;
   }
-
   .pill{
     background:var(--white);
     border:var(--border) solid var(--pink-dark);
@@ -104,7 +94,6 @@
     gap:.55rem;
     font-size:1.1rem;
   }
-
   .btn{
     border:var(--border) solid var(--ink);
     background:var(--white);
@@ -119,7 +108,7 @@
   .btn:active{ transform:scale(.98); }
   .btnPrimary{ border:var(--border) solid var(--pink-dark); }
 
-  /* EX1 grid */
+  /* GAME 1 grid */
   .grid6{
     width:95vw; max-width:1400px;
     display:grid;
@@ -143,7 +132,7 @@
   .imgToken:active{ transform:scale(.97); }
   .imgToken img{ width:90%; height:90%; object-fit:contain; }
 
-  /* tiles for numbers/colours/toys */
+  /* tiles */
   .tile{
     width:90%;
     height:90%;
@@ -156,7 +145,6 @@
     overflow:hidden;
   }
   .tileNum{ font-size:clamp(2.6rem,9vmin,5.6rem); line-height:1; }
-  .tileEmoji{ font-size:clamp(2.6rem,9vmin,5.4rem); line-height:1; }
   .tileSwatch{
     width:78%; height:78%;
     border-radius:18px;
@@ -164,7 +152,7 @@
     box-shadow:0 8px 18px rgba(0,0,0,.08);
   }
 
-  /* EX2 prompt */
+  /* GAME 2 prompt */
   .rowCenter{
     width:95vw; max-width:1220px;
     display:flex;
@@ -186,7 +174,7 @@
   }
   .bigPrompt img{ width:85%; height:85%; object-fit:contain; }
 
-  /* EX3 */
+  /* GAME 3 */
   .sentence{
     display:flex;
     align-items:center;
@@ -228,7 +216,6 @@
   <button class="iconBtn" id="next">▶</button>
 </div>
 
-<!-- GAME 1 -->
 <section class="wrap" id="g1">
   <div class="rightHud">
     <div class="hudBox">
@@ -244,7 +231,6 @@
   <div class="grid6" id="grid1"></div>
 </section>
 
-<!-- GAME 2 -->
 <section class="wrap hidden" id="g2">
   <div class="rightHud">
     <div class="hudBox">
@@ -262,7 +248,6 @@
   </div>
 </section>
 
-<!-- GAME 3 -->
 <section class="wrap hidden" id="g3">
   <div class="rightHud">
     <div class="hudBox">
@@ -291,31 +276,30 @@
    DATA
    ========================================================= */
 
-/* Numbers audio base (1.mp3 ... 20.mp3) */
+/* numbers 1–10 audio */
 const NUM_AUDIO_BASE = "https://github.com/albrechtclaire1007/zuelen1-20kub/raw/refs/heads/main";
 
-/* School supplies (your links) */
+/* school supplies */
 const SCHOOL_AUDIO_BASE = "https://github.com/albrechtclaire1007/p1schoulsaachen/raw/refs/heads/main";
 const SCHOOL = [
-  { id:'blaisteft',         label:'e Bläisteft',         img:'https://i.postimg.cc/5YJ7PXCx/blaisteft.png',          audio:`${SCHOOL_AUDIO_BASE}/Bläisteft.mp3` },
-  { id:'blaisteftsfaarwen', label:'Bläistëftsfaarwen',   img:'https://i.postimg.cc/rdxZC1K8/blaisteftsfaarwen.png',  audio:`${SCHOOL_AUDIO_BASE}/Bläisteftsfaarwen.mp3` },
-  { id:'buch',              label:'e Buch',              img:'https://i.postimg.cc/R6msPWHv/buch.png',               audio:`${SCHOOL_AUDIO_BASE}/Buch.mp3` },
-  { id:'classeur',          label:'e Classeur',          img:'https://i.postimg.cc/5HLKqB6d/classeur.png',           audio:`${SCHOOL_AUDIO_BASE}/Classeur.mp3` },
-  { id:'gummi',             label:'e Gummi',             img:'https://i.postimg.cc/gXpSMxZd/gummi.png',              audio:`${SCHOOL_AUDIO_BASE}/Gummi.mp3` },
-  { id:'heft',              label:'e Heft',              img:'https://i.postimg.cc/NymC765s/heft.png',               audio:`${SCHOOL_AUDIO_BASE}/Heft.mp3` },
-  { id:'joffer',            label:'eng Joffer',          img:'https://i.postimg.cc/SnwtMTQt/joffer.png',             audio:`${SCHOOL_AUDIO_BASE}/Joffer.mp3` },
-  { id:'lineal',            label:'e Lineal',            img:'https://i.postimg.cc/r0TnhDrT/lineal.png',             audio:`${SCHOOL_AUDIO_BASE}/Lineal.mp3` },
-  { id:'pech',              label:'e Pech',              img:'https://i.postimg.cc/1nSCW8qq/pech.png',               audio:`${SCHOOL_AUDIO_BASE}/Pech.mp3` },
-  { id:'schachtel',         label:'eng Schachtel',       img:'https://i.postimg.cc/rDvYrnyn/schachtel.png',          audio:`${SCHOOL_AUDIO_BASE}/Schachtel.mp3` },
-  { id:'scheier',           label:'eng Schéier',         img:'https://i.postimg.cc/ZBm7fWdN/scheier.png',            audio:`${SCHOOL_AUDIO_BASE}/Schéier.mp3` },
-  { id:'schoulsak',         label:'e Schoulsak',         img:'https://i.postimg.cc/cKwkMR65/schoulsak.png',          audio:`${SCHOOL_AUDIO_BASE}/Schoulsak.mp3` },
-  { id:'schwamp',           label:'e Schwamp',           img:'https://i.postimg.cc/9D4nz5hs/schwamp.png',            audio:`${SCHOOL_AUDIO_BASE}/Schwamp.mp3` },
-  { id:'spetzer',           label:'e Spëtzer',           img:'https://i.postimg.cc/BjdwKYZV/spetzer.png',            audio:`${SCHOOL_AUDIO_BASE}/Spëtzer.mp3` },
-  { id:'tafel',             label:'eng Tafel',           img:'https://i.postimg.cc/VJ3HCGsT/tafel.png',              audio:`${SCHOOL_AUDIO_BASE}/Tafel.mp3` },
-  { id:'tuschfaarwen',      label:'Tuschfaarwen',        img:'https://i.postimg.cc/McV3b7vp/tuschfaarwen.png',       audio:`${SCHOOL_AUDIO_BASE}/Tuschfaarwen.mp3` }
+  { id:'blaisteft',         img:'https://i.postimg.cc/5YJ7PXCx/blaisteft.png',          audio:`${SCHOOL_AUDIO_BASE}/Bläisteft.mp3` },
+  { id:'blaisteftsfaarwen', img:'https://i.postimg.cc/rdxZC1K8/blaisteftsfaarwen.png',  audio:`${SCHOOL_AUDIO_BASE}/Bläisteftsfaarwen.mp3` },
+  { id:'buch',              img:'https://i.postimg.cc/R6msPWHv/buch.png',               audio:`${SCHOOL_AUDIO_BASE}/Buch.mp3` },
+  { id:'classeur',          img:'https://i.postimg.cc/5HLKqB6d/classeur.png',           audio:`${SCHOOL_AUDIO_BASE}/Classeur.mp3` },
+  { id:'gummi',             img:'https://i.postimg.cc/gXpSMxZd/gummi.png',              audio:`${SCHOOL_AUDIO_BASE}/Gummi.mp3` },
+  { id:'heft',              img:'https://i.postimg.cc/NymC765s/heft.png',               audio:`${SCHOOL_AUDIO_BASE}/Heft.mp3` },
+  { id:'joffer',            img:'https://i.postimg.cc/SnwtMTQt/joffer.png',             audio:`${SCHOOL_AUDIO_BASE}/Joffer.mp3` },
+  { id:'lineal',            img:'https://i.postimg.cc/r0TnhDrT/lineal.png',             audio:`${SCHOOL_AUDIO_BASE}/Lineal.mp3` },
+  { id:'pech',              img:'https://i.postimg.cc/1nSCW8qq/pech.png',               audio:`${SCHOOL_AUDIO_BASE}/Pech.mp3` },
+  { id:'schachtel',         img:'https://i.postimg.cc/rDvYrnyn/schachtel.png',          audio:`${SCHOOL_AUDIO_BASE}/Schachtel.mp3` },
+  { id:'scheier',           img:'https://i.postimg.cc/ZBm7fWdN/scheier.png',            audio:`${SCHOOL_AUDIO_BASE}/Schéier.mp3` },
+  { id:'schoulsak',         img:'https://i.postimg.cc/cKwkMR65/schoulsak.png',          audio:`${SCHOOL_AUDIO_BASE}/Schoulsak.mp3` },
+  { id:'schwamp',           img:'https://i.postimg.cc/9D4nz5hs/schwamp.png',            audio:`${SCHOOL_AUDIO_BASE}/Schwamp.mp3` },
+  { id:'spetzer',           img:'https://i.postimg.cc/BjdwKYZV/spetzer.png',            audio:`${SCHOOL_AUDIO_BASE}/Spëtzer.mp3` },
+  { id:'tafel',             img:'https://i.postimg.cc/VJ3HCGsT/tafel.png',              audio:`${SCHOOL_AUDIO_BASE}/Tafel.mp3` },
+  { id:'tuschfaarwen',      img:'https://i.postimg.cc/McV3b7vp/tuschfaarwen.png',       audio:`${SCHOOL_AUDIO_BASE}/Tuschfaarwen.mp3` }
 ];
 
-/* Numbers 1–10 with audio */
 const NUMBERS = Array.from({length:10}, (_,i)=>({
   id:`num${i+1}`,
   type:'num',
@@ -323,7 +307,6 @@ const NUMBERS = Array.from({length:10}, (_,i)=>({
   audio:`${NUM_AUDIO_BASE}/${i+1}.mp3`
 }));
 
-/* Colours (silent) */
 const COLOURS = [
   { id:'rout',   type:'col', hex:'#e53935' },
   { id:'blo',    type:'col', hex:'#1e88e5' },
@@ -333,27 +316,35 @@ const COLOURS = [
   { id:'rosa',   type:'col', hex:'#d81b60' }
 ];
 
-/* Toys (placeholder emoji tiles)
-   Paste your Spillsaachen ITEMS array later (img+audio) and replace this block if you want real assets. */
+/* toys – REAL links you provided */
+const RAW = "https://github.com/albrechtclaire1007/p1spillsaachen/raw/refs/heads/main"; /* adjust if different */
 const TOYS = [
-  { id:'ball',   type:'toy', emoji:'⚽️' },
-  { id:'popp',   type:'toy', emoji:'🪆' },
-  { id:'teddy',  type:'toy', emoji:'🧸' },
-  { id:'auto',   type:'toy', emoji:'🚗' },
-  { id:'zuch',   type:'toy', emoji:'🚂' },
-  { id:'puzzle', type:'toy', emoji:'🧩' }
+  { id:'teddybier',   type:'img', img:'https://i.postimg.cc/XpDBC4jQ/1.png',  audio:`${RAW}/teddybier1.mp3`, correctId:null },
+  { id:'fliger',      type:'img', img:'https://i.postimg.cc/zHG3yP4s/2.png',  audio:`${RAW}/1fliger.mp3`,    correctId:'videospill' },
+  { id:'velo',        type:'img', img:'https://i.postimg.cc/qztMWnrx/11.png', audio:`${RAW}/1velo.mp3`,      correctId:null },
+  { id:'popp',        type:'img', img:'https://i.postimg.cc/KkJ8hD4J/8.png',  audio:`${RAW}/1popp.mp3`,      correctId:null },
+  { id:'ball',        type:'img', img:'https://i.postimg.cc/Vd5d1pqM/5.png',  audio:`${RAW}/1ball.mp3`,      correctId:null },
+  { id:'wierfel',     type:'img', img:'https://i.postimg.cc/YhJq79qK/12.png', audio:`${RAW}/1wierfel.mp3`,   correctId:null },
+  { id:'roboter',     type:'img', img:'https://i.postimg.cc/BtSj7Xtm/3.png',  audio:`${RAW}/1roboter.mp3`,   correctId:null },
+  { id:'radio',       type:'img', img:'https://i.postimg.cc/WdkzqZf1/6.png',  audio:`${RAW}/1radio.mp3`,     correctId:null },
+  { id:'kaartespill', type:'img', img:'https://i.postimg.cc/YGpCPs2v/9.png',  audio:`${RAW}/1kaarte.mp3`,    correctId:null },
+  { id:'trommel',     type:'img', img:'https://i.postimg.cc/xq1dyhF7/10.png', audio:`${RAW}/1trommel.mp3`,   correctId:null },
+  { id:'videospill',  type:'img', img:'https://i.postimg.cc/S2rJNp1L/4.png',  audio:`${RAW}/1video.mp3`,     correctId:'fliger' },
+  { id:'pesel',       type:'img', img:'https://i.postimg.cc/SXbs6Kw7/7.png',  audio:`${RAW}/1pesel.mp3`,     correctId:null }
 ];
 
-const SCHOOL_MIX = SCHOOL.map(x=>({ type:'img', id:x.id, img:x.img, audio:x.audio }));
+/* normalize school + toys into img-type items */
+const SCHOOL_MIX = SCHOOL.map(x=>({ type:'img', id:x.id, img:x.img, audio:x.audio, correctId:null }));
 
-/* Pools */
+/* POOL for game 1+2 */
 const POOL_ALL = [
   ...SCHOOL_MIX,
+  ...TOYS,
   ...NUMBERS,
-  ...COLOURS,
-  ...TOYS
+  ...COLOURS
 ];
 
+/* nouns for game 3 (objects only) */
 const NOUNS3 = [
   ...SCHOOL_MIX,
   ...TOYS
@@ -417,7 +408,6 @@ function makeTimer(durationSec, onTick, onDone){
   let remaining = durationSec;
   let running = false;
   let intId = null;
-
   function tick(){
     if(!running) return;
     remaining -= 1;
@@ -473,24 +463,13 @@ function makeTileColour(hex){
   const s = document.createElement('div');
   s.className = 'tileSwatch';
   s.style.background = hex;
-  if(hex.toLowerCase() === '#ffffff'){
-    s.style.border = '10px solid rgba(0,0,0,.22)';
-  }
   d.appendChild(s);
-  return d;
-}
-function makeTileToy(emoji){
-  const d = document.createElement('div');
-  d.className = 'tile';
-  const t = document.createElement('div');
-  t.className = 'tileEmoji';
-  t.textContent = emoji;
-  d.appendChild(t);
   return d;
 }
 
 /* =========================================================
-   GAME 1: 6 choices, only correct counts, Skip available
+   GAME 1 (audio-led, 6 options, skip)
+   - correct for “fliger” / “videospill” uses correctId mapping
    ========================================================= */
 const grid1 = document.getElementById('grid1');
 const t1El = document.getElementById('t1');
@@ -526,10 +505,13 @@ function renderOptionButton1(opt){
     b.appendChild(makeTileNumber(opt.label));
   }else if(opt.type === 'col'){
     b.appendChild(makeTileColour(opt.hex));
-  }else if(opt.type === 'toy'){
-    b.appendChild(makeTileToy(opt.emoji));
   }
   return b;
+}
+
+function expectedAnswerId(target){
+  // if target has a "correctId", then the correct image is that id (swap pairs)
+  return target.correctId ? target.correctId : target.id;
 }
 
 function cue1(){
@@ -544,11 +526,13 @@ function cue1(){
 function next1(){
   current1 = buildRound1();
   grid1.innerHTML = "";
+  const wantId = expectedAnswerId(current1.target);
+
   current1.options.forEach(opt=>{
     const b = renderOptionButton1(opt);
     b.onclick = ()=>{
       if(g1Locked) return;
-      const ok = opt.id === current1.target.id;
+      const ok = opt.id === wantId;
       flash(b, ok);
       if(ok){
         score1 += 1;
@@ -558,6 +542,7 @@ function next1(){
     };
     grid1.appendChild(b);
   });
+
   cue1();
 }
 
@@ -600,7 +585,6 @@ function finish1(){
   pause1Btn.disabled = true;
   replay1Btn.disabled = true;
   skip1Btn.disabled = true;
-  // no finish text
 }
 
 start1Btn.onclick = startG1;
@@ -609,7 +593,7 @@ replay1Btn.onclick = ()=>{ if(!g1Locked && current1 && current1.target.audio) pl
 skip1Btn.onclick = skip1;
 
 /* =========================================================
-   GAME 2: teacher marks (mixed), only correct counts
+   GAME 2 (teacher marks, mixed)
    ========================================================= */
 const t2El = document.getElementById('t2');
 const s2El = document.getElementById('s2');
@@ -638,8 +622,6 @@ function renderCardInto(el, item){
     el.appendChild(makeTileNumber(item.label));
   }else if(item.type === 'col'){
     el.appendChild(makeTileColour(item.hex));
-  }else if(item.type === 'toy'){
-    el.appendChild(makeTileToy(item.emoji));
   }
 }
 
@@ -697,7 +679,6 @@ function finish2(){
   pause2Btn.disabled = true;
   ok2Btn.disabled = true;
   bad2Btn.disabled = true;
-  // no finish text
 }
 
 start2Btn.onclick = startG2;
@@ -706,7 +687,7 @@ ok2Btn.onclick = ()=> mark2(true);
 bad2Btn.onclick = ()=> mark2(false);
 
 /* =========================================================
-   GAME 3: teacher marks (noun + colour), only correct counts
+   GAME 3 (teacher marks: noun + colour)
    ========================================================= */
 const t3El = document.getElementById('t3');
 const s3El = document.getElementById('s3');
@@ -736,21 +717,15 @@ function next3(){
   current3.noun = bagN3.pop();
   current3.col = bagC3.pop();
 
-  // noun
   noun3Box.innerHTML = "";
-  if(current3.noun.type === 'img'){
-    const img = document.createElement('img');
-    img.src = current3.noun.img;
-    img.alt = '';
-    img.style.width = "85%";
-    img.style.height = "85%";
-    img.style.objectFit = "contain";
-    noun3Box.appendChild(img);
-  }else{
-    noun3Box.appendChild(makeTileToy(current3.noun.emoji));
-  }
+  const img = document.createElement('img');
+  img.src = current3.noun.img;
+  img.alt = '';
+  img.style.width = "85%";
+  img.style.height = "85%";
+  img.style.objectFit = "contain";
+  noun3Box.appendChild(img);
 
-  // colour
   col3Box.innerHTML = "";
   const sw = document.createElement('div');
   sw.className = "colorSwatch";
@@ -806,7 +781,6 @@ function finish3(){
   pause3Btn.disabled = true;
   ok3Btn.disabled = true;
   bad3Btn.disabled = true;
-  // no finish text
 }
 
 start3Btn.onclick = startG3;
@@ -814,13 +788,10 @@ pause3Btn.onclick = togglePause3;
 ok3Btn.onclick = ()=> mark3(true);
 bad3Btn.onclick = ()=> mark3(false);
 
-/* =========================================================
-   INIT
-   ========================================================= */
+/* INIT */
 showPage(0);
 updateNav();
 </script>
 
 </body>
 </html>
-
