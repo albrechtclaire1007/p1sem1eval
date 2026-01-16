@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="lb">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>P1 – Teacher-led Assessment (3x 1 Minutt)</title>
+
+<style>
+  /* FONT (same as your P1 codes) */
+  @font-face{
+    font-family:'Schoulschrëft';
+    src:url('https://raw.githubusercontent.com/albrechtclaire1007/schoulschreft/main/schoulschreft_bold%5B2%5D.TTF') format('truetype');
+    font-weight:bold; font-style:normal; font-display:swap;
+  }
+
+  :root{
+    --pink-mid:#e4b7d0; --pink-light:#f6e4ee; --pink-dark:#d88cb8;
+    --ink:#1f1f1f; --white:#fff; --bad:#ffcccc; --ok:#b7f0c8;
+    --border:3px;
+  }
+
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent; user-select:none; outline:none;}
+  html,body{
+    height:100%; margin:0;
+    background:linear-gradient(135deg,var(--pink-mid),var(--pink-light));
+    color:var(--ink);
+    font-family:'Schoulschrëft', Arial, sans-serif;
+  }
+
+  /* Top bar with arrows (same style) */
+  .top{
+    position:sticky; top:8px; z-index:10;
+    display:flex; gap:12px; align-items:center; justify-content:center;
+    background:var(--white);
+    border:var(--border) solid var(--pink-dark);
+    border-radius:18px;
+    padding:.35rem .8rem; margin:10px auto; width:fit-content;
+    box-shadow:0 8px 24px rgba(0,0,0,.08);
+  }
+  .iconBtn{
+    border:var(--border) solid var(--ink);
+    background:var(--white);
+    color:var(--ink);
+    padding:.25rem .7rem;
+    border-radius:14px;
+    cursor:pointer;
+    font-size:1.4rem;
+    line-height:1;
+    min-width:2.4rem;
+    display:grid;
+    place-items:center;
+    font-family:'Schoulschrëft', Arial, sans-serif;
+  }
+  .iconBtn:active{ transform:scale(.98); }
+  .flow{opacity:.9; font-size:1rem; padding:0 .4rem; min-width:10ch; text-align:center;}
+  .hidden{display:none !important;}
+
+  .wrap{
+    min-height:calc(100vh - 80px);
+    display:flex; flex-direction:column; align-items:center;
+    gap:2.2vmin;
+    padding:2.5vmin 3vmin 4vmin;
+  }
+  h1{
+    margin:.2rem 0 0;
+    text-align:center;
+    font-size:clamp(2rem,6vmin,4rem);
+    color:var(--ink);
+  }
+
+  /* Instruction box (same "teacher led" vibe) */
+  .inst{
+    width:min(980px,94vw);
+    background:var(--white);
+    border:var(--border) solid var(--pink-dark);
+    border-radius:18px;
+    padding:12px 16px;
+    box-shadow:0 8px 20px rgba(0,0,0,.07);
+    font-size:clamp(1.05rem,2.2vmin,1.35rem);
+    text-align:center;
+  }
+
+  /* HUD row: timer + score + controls */
+  .hud{
+    width:min(1200px,94vw);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .hudLeft, .hudRight{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+
+  .pill{
+    background:var(--white);
+    border:var(--border) solid var(--pink-dark);
+    border-radius:999px;
+    padding:.35rem .75rem;
+    box-shadow:0 8px 20px rgba(0,0,0,.07);
+    display:flex;
+    align-items:center;
+    gap:.55rem;
+    font-size:1.1rem;
+  }
+
+  .timerCircle{
+    width:64px; height:64px;
+    border-radius:50%;
+    background:var(--white);
+    border:6px solid var(--pink-mid);
+    display:grid;
+    place-items:center;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    font-size:1.15rem;
+  }
+
+  .btn{
+    border:var(--border) solid var(--ink);
+    background:var(--white);
+    color:var(--ink);
+    padding:.45rem .85rem;
+    border-radius:14px;
+    cursor:pointer;
+    font-size:1.05rem;
+    font-family:'Schoulschrëft', Arial, sans-serif;
+  }
+  .btn:active{ transform:scale(.98); }
+  .btnPrimary{
+    background:var(--white);
+    border:var(--border) solid var(--pink-dark);
+  }
+
+  /* 6-option grid for exercise 1 */
+  .grid6{
+    width:95vw; max-width:1400px;
+    display:grid;
+    gap:2vmin;
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+  }
+  @media (min-width:900px){
+    .grid6{ grid-template-columns:repeat(6, minmax(0, 1fr)); }
+  }
+  .imgToken{
+    background:var(--white);
+    border:6px solid var(--pink-mid);
+    border-radius:22px;
+    display:grid;
+    place-items:center;
+    aspect-ratio:1/1;
+    cursor:pointer;
+    transition:transform .1s ease, border-color .15s ease, background .15s ease;
+    box-shadow:0 10px 26px rgba(0,0,0,.08);
+  }
+  .imgToken:active{ transform:scale(.97); }
+  .imgToken img{ width:90%; height:90%; object-fit:contain; }
+
+  /* Generic "tile" for numbers / emoji items */
+  .tile{
+    width:90%; height:90%;
+    border-radius:18px;
+    border:6px solid var(--pink-mid);
+    background:linear-gradient(135deg,#fff,#fff);
+    display:grid;
+    place-items:center;
+    box-shadow:0 10px 26px rgba(0,0,0,.05);
+  }
+  .tileNum{
+    font-size:clamp(2.4rem,8vmin,5.2rem);
+    line-height:1;
+  }
+  .tileEmoji{
+    font-size:clamp(2.4rem,8vmin,5rem);
+    line-height:1;
+  }
+  .tileLabel{
+    margin-top:.35rem;
+    font-size:clamp(1.1rem,2.8vmin,1.8rem);
+    text-align:center;
+    opacity:.92;
+  }
+
+  /* Exercise 2 / 3 main prompt box */
+  .bigPrompt{
+    width:min(72vmin,520px);
+    aspect-ratio:1/1;
+    background:#fff;
+    border:12px solid var(--pink-mid);
+    border-radius:40px;
+    display:grid;
+    place-items:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+    position:relative;
+    overflow:hidden;
+  }
+  .bigPrompt img{
+    width:85%;
+    height:85%;
+    object-fit:contain;
+  }
+
+  /* Sentence line for ex3 */
+  .sentence{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:min(2.2vmin,16px);
+    flex-wrap:wrap;
+    font-size:clamp(2.2rem,5.1vw,3.4rem);
+    text-align:center;
+  }
+  .inlineSq{
+    display:inline-grid;
+    place-items:center;
+    width:min(36vmin,420px);
+    aspect-ratio:1/1;
+    border:10px solid var(--pink-mid);
+    border-radius:28px;
+    background:#fff;
+    box-shadow:0 8px 24px rgba(0,0,0,.08);
+    overflow:hidden;
+  }
+  .colorSwatch{
+    width:82%;
+    height:82%;
+    border-radius:22px;
+    border:8px solid rgba(0,0,0,.12);
+    box-shadow:0 8px 18px rgba(0,0,0,.08);
+  }
+
+  /* Right-side marking buttons */
+  .markCol{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .markBtn{
+    width:92px;
+    height:92px;
+    border-radius:22px;
+    border:6px solid var(--ink);
+    background:var(--white);
+    font-size:2.3rem;
+    cursor:pointer;
+    display:grid;
+    place-items:center;
+    box-shadow:0 10px 26px rgba(0,0,0,.08);
+  }
+  .markBtn:active{ transform:scale(.98); }
+
+  .flash-good{ background:var(--ok) !important; border-color:var(--ok) !important; }
+  .flash-bad{ background:var(--bad) !important; border-color:var(--bad) !important; }
+
+  .rowCenter{
+    width:95vw; max-width:1200px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:18px;
+    flex-wrap:wrap;
+  }
+
+  /* End popup */
+  #endBanner{
+    position:fixed; inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    background:rgba(0,0,0,.25);
+    z-index:50;
+    padding:16px;
+  }
+  #endBannerInner{
+    background:#fff;
+    padding:18px 22px;
+    border-radius:18px;
+    border:6px solid var(--pink-mid);
+    font-size:clamp(1.4rem,4.2vw,2.2rem);
+    text-align:center;
+    width:min(740px,92vw);
+    box-shadow:0 18px 40px rgba(0,0,0,.18);
+  }
+  .endBtns{
+    margin-top:14px;
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+
+  .smallNote{opacity:.85; font-size:1.05rem; text-align:center; margin:0;}
+</style>
+</head>
+
+<body>
+
+<!-- Top nav -->
+<div class="top">
+  <button class="iconBtn" id="prev">◀</button>
+  <span class="flow" id="flowLabel">1. Übung</span>
+  <button class="iconBtn" id="next">▶</button>
+</div>
+
+<!-- EX 1 -->
+<section class="wrap" id="g1">
+  <h1>1) Lauschter a klick</h1>
+
+  <div class="inst">
+    Dréck <span style="white-space:nowrap;">„Start – 1 Minutt“</span>. Du héiers e Wuert. Klicke dat richtegt Bild.
+    <br/>👉 Nëmmen richteg zielt. Falsch gëtt iwwersprongen.
+  </div>
+
+  <div class="hud">
+    <div class="hudLeft">
+      <div class="timerCircle" id="t1">01:00</div>
+      <div class="pill"><span>✅</span> <span id="s1">0</span></div>
+      <button class="btn btnPrimary" id="start1">Start – 1 Minutt</button>
+      <button class="btn" id="pause1" disabled>Pause</button>
+      <button class="btn" id="replay1" disabled>Toun nach eng Kéier</button>
+    </div>
+    <div class="hudRight">
+      <div class="pill"><span>Ronn</span> <span id="r1">0</span><span>/60</span></div>
+    </div>
+  </div>
+
+  <div class="grid6" id="grid1"></div>
+  <p class="smallNote">Tipp: Wann d’Audio net auto-spillt, dréck eemol op „Toun nach eng Kéier“.</p>
+</section>
+
+<!-- EX 2 -->
+<section class="wrap hidden" id="g2">
+  <h1>2) Wat ass dat?</h1>
+
+  <div class="inst">
+    Dréck <span style="white-space:nowrap;">„Start – 1 Minutt“</span>. Et kënnt ëmmer eng Kaart.
+    D’Kand seet et. Du klicks ✅ oder ❌.
+  </div>
+
+  <div class="hud">
+    <div class="hudLeft">
+      <div class="timerCircle" id="t2">01:00</div>
+      <div class="pill"><span>✅</span> <span id="s2">0</span></div>
+      <button class="btn btnPrimary" id="start2">Start – 1 Minutt</button>
+      <button class="btn" id="pause2" disabled>Pause</button>
+    </div>
+  </div>
+
+  <div class="rowCenter">
+    <div class="bigPrompt" id="prompt2"></div>
+
+    <div class="markCol">
+      <button class="markBtn" id="ok2" title="Richteg" disabled>✅</button>
+      <button class="markBtn" id="bad2" title="Falsch" disabled>❌</button>
+    </div>
+  </div>
+</section>
+
+<!-- EX 3 -->
+<section class="wrap hidden" id="g3">
+  <h1>3) Lies de Saz</h1>
+
+  <div class="inst">
+    Dréck <span style="white-space:nowrap;">„Start – 1 Minutt“</span>. D’Kand liest:
+    <br/><span style="white-space:nowrap;">(Objet) + „ass“ + (Faarf)</span>. Du klicks ✅ oder ❌.
+  </div>
+
+  <div class="hud">
+    <div class="hudLeft">
+      <div class="timerCircle" id="t3">01:00</div>
+      <div class="pill"><span>✅</span> <span id="s3">0</span></div>
+      <button class="btn btnPrimary" id="start3">Start – 1 Minutt</button>
+      <button class="btn" id="pause3" disabled>Pause</button>
+    </div>
+  </div>
+
+  <div class="rowCenter" style="flex-direction:column; gap:14px;">
+    <div class="sentence">
+      <div class="inlineSq" id="noun3"></div>
+      <span>ass</span>
+      <div class="inlineSq" id="col3"></div>
+    </div>
+
+    <div class="rowCenter" style="gap:16px;">
+      <button class="markBtn" id="ok3" title="Richteg" disabled>✅</button>
+      <button class="markBtn" id="bad3" title="Falsch" disabled>❌</button>
+    </div>
+  </div>
+</section>
+
+<!-- END POPUP -->
+<div id="endBanner">
+  <div id="endBannerInner">
+    <div id="endText">Fäerdeg!</div>
+    <div class="endBtns">
+      <button class="btn btnPrimary" id="againBtn">Nach eng Kéier</button>
+      <button class="btn" id="nextBtnPop">Weider ▶</button>
+    </div>
+  </div>
+</div>
+
+<audio id="speaker" preload="auto"></audio>
+
+<script>
+/* =========================================================
+   DATA (links from your previous P1 code)
+   ========================================================= */
+const AUDIO_BASE = "https://github.com/albrechtclaire1007/p1schoulsaachen/raw/refs/heads/main";
+
+const SCHOOL_ITEMS = [
+  { id:'blaisteft',         label:'e Bläisteft',         img:'https://i.postimg.cc/5YJ7PXCx/blaisteft.png',         audio:`${AUDIO_BASE}/Bläisteft.mp3` },
+  { id:'blaisteftsfaarwen', label:'Bläistëftsfaarwen',   img:'https://i.postimg.cc/rdxZC1K8/blaisteftsfaarwen.png', audio:`${AUDIO_BASE}/Bläistëftsfaarwen.mp3` },
+  { id:'buch',              label:'e Buch',              img:'https://i.postimg.cc/R6msPWHv/buch.png',              audio:`${AUDIO_BASE}/Buch.mp3` },
+  { id:'classeur',          label:'e Classeur',          img:'https://i.postimg.cc/5HLKqB6d/classeur.png',          audio:`${AUDIO_BASE}/Classeur.mp3` },
+  { id:'gummi',             label:'e Gummi',             img:'https://i.postimg.cc/gXpSMxZd/gummi.png',             audio:`${AUDIO_BASE}/Gummi.mp3` },
+  { id:'heft',              label:'e Heft',              img:'https://i.postimg.cc/NymC765s/heft.png',              audio:`${AUDIO_BASE}/Heft.mp3` },
+  { id:'joffer',            label:'eng Joffer',          img:'https://i.postimg.cc/SnwtMTQt/joffer.png',            audio:`${AUDIO_BASE}/Joffer.mp3` },
+  { id:'lineal',            label:'e Lineal',            img:'https://i.postimg.cc/r0TnhDrT/lineal.png',            audio:`${AUDIO_BASE}/Lineal.mp3` },
+  { id:'pech',              label:'e Pech',              img:'https://i.postimg.cc/1nSCW8qq/pech.png',              audio:`${AUDIO_BASE}/Pech.mp3` },
+  { id:'schachtel',         label:'eng Schachtel',       img:'https://i.postimg.cc/rDvYrnyn/schachtel.png',         audio:`${AUDIO_BASE}/Schachtel.mp3` },
+  { id:'scheier',           label:'eng Schéier',         img:'https://i.postimg.cc/ZBm7fWdN/scheier.png',           audio:`${AUDIO_BASE}/M__SCHEIER.wav` },
+  { id:'schoulsak',         label:'e Schoulsak',         img:'https://i.postimg.cc/cKwkMR65/schoulsak.png',         audio:`${AUDIO_BASE}/Schoulsak.mp3` },
+  { id:'schwamp',           label:'e Schwamp',           img:'https://i.postimg.cc/9D4nz5hs/schwamp.png',           audio:`${AUDIO_BASE}/Schwamp.mp3` },
+  { id:'spetzer',           label:'e Spëtzer',           img:'https://i.postimg.cc/BjdwKYZV/spetzer.png',           audio:`${AUDIO_BASE}/Spëtzer.mp3` },
+  { id:'tafel',             label:'eng Tafel',           img:'https://i.postimg.cc/VJ3HCGsT/tafel.png',             audio:`${AUDIO_BASE}/Tafel.mp3` },
+  { id:'tuschfaarwen',      label:'Tuschfaarwen',        img:'https://i.postimg.cc/McV3b7vp/tuschfaarwen.png',      audio:`${AUDIO_BASE}/Tuschfaarwen.mp3` }
+];
+
+/* Numbers (own, Schoulschrëft + colours) */
+const NUMBERS = Array.from({length:10}, (_,i)=>({
+  id:`num${i+1}`,
+  type:'num',
+  label:String(i+1),
+}));
+
+/* Colours (own swatches) */
+const COLOURS = [
+  { id:'red',    label:'rout',   hex:'#e53935' },
+  { id:'blue',   label:'blo',    hex:'#1e88e5' },
+  { id:'green',  label:'gréng',  hex:'#43a047' },
+  { id:'yellow', label:'giel',   hex:'#fdd835' },
+  { id:'orange', label:'orange', hex:'#fb8c00' },
+  { id:'pink',   label:'rosa',   hex:'#d81b60' },
+  { id:'black',  label:'schwaarz',hex:'#1f1f1f' },
+  { id:'white',  label:'wäiss',  hex:'#ffffff' }
+];
+
+/* Spillsaachen (own, simple emoji tiles) */
+const TOYS = [
+  { id:'toyball',  label:'de Ball',    emoji:'⚽️' },
+  { id:'teddybear',label:'den Teddy',  emoji:'🧸' },
+  { id:'doll',     label:'d’Popp',     emoji:'🪆' },
+  { id:'car',      label:'den Auto',   emoji:'🚗' },
+  { id:'blocks',   label:'d’Bauklécker',emoji:'🧱' },
+  { id:'kite',     label:'de Draach',  emoji:'🪁' },
+  { id:'train',    label:'den Zuch',   emoji:'🚂' },
+  { id:'puzzle',   label:'de Puzzle',  emoji:'🧩' }
+];
+
+/* Bank for Exercise 2 (mixed) */
+const BANK2 = [
+  ...SCHOOL_ITEMS.map(x=>({type:'img', id:x.id, label:x.label, img:x.img, audio:x.audio})),
+  ...NUMBERS.map(x=>({type:'num', id:x.id, label:x.label})),
+  ...COLOURS.map(x=>({type:'col', id:x.id, label:x.label, hex:x.hex})),
+  ...TOYS.map(x=>({type:'toy', id:x.id, label:x.label, emoji:x.emoji}))
+];
+
+/* Bank for Exercise 3 nouns: objects only (school + toys) */
+const NOUNS3 = [
+  ...SCHOOL_ITEMS.map(x=>({type:'img', id:x.id, label:x.label, img:x.img})),
+  ...TOYS.map(x=>({type:'toy', id:x.id, label:x.label, emoji:x.emoji}))
+];
+
+/* =========================================================
+   UTIL
+   ========================================================= */
+function shuffle(a){
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function pad2(n){ return String(n).padStart(2,'0'); }
+
+function flash(el, ok){
+  el.classList.remove('flash-good','flash-bad');
+  void el.offsetWidth;
+  el.classList.add(ok ? 'flash-good' : 'flash-bad');
+  setTimeout(()=> el.classList.remove('flash-good','flash-bad'), 260);
+}
+
+const speaker = document.getElementById('speaker');
+async function playSound(src){
+  try{
+    if(!src) return;
+    if(speaker.src !== src) speaker.src = src;
+    await speaker.play();
+  }catch(e){}
+}
+
+/* =========================================================
+   NAV
+   ========================================================= */
+const pages = ["g1","g2","g3"];
+let pageIdx = 0;
+const flowLabel = document.getElementById('flowLabel');
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
+
+function updateNav(){
+  flowLabel.textContent = `${pageIdx+1}. Übung`;
+  prevBtn.classList.toggle('hidden', pageIdx===0);
+  nextBtn.classList.toggle('hidden', pageIdx===pages.length-1);
+}
+function showPage(i){
+  pageIdx = Math.max(0, Math.min(pages.length-1, i));
+  pages.forEach((id,idx)=>document.getElementById(id).classList.toggle('hidden', idx!==pageIdx));
+  updateNav();
+}
+prevBtn.onclick = ()=> showPage(pageIdx-1);
+nextBtn.onclick = ()=> showPage(pageIdx+1);
+
+/* =========================================================
+   SHARED TIMER FACTORY (1 minute + pause)
+   ========================================================= */
+function makeTimer(durationSec, onTick, onDone){
+  let remaining = durationSec;
+  let running = false;
+  let intId = null;
+
+  function tick(){
+    if(!running) return;
+    remaining -= 1;
+    onTick(remaining);
+    if(remaining <= 0){
+      stop(true);
+      onDone();
+    }
+  }
+
+  function start(){
+    if(running) return;
+    running = true;
+    onTick(remaining);
+    intId = setInterval(tick, 1000);
+  }
+
+  function pause(){
+    if(!running) return;
+    running = false;
+    clearInterval(intId);
+    intId = null;
+  }
+
+  function reset(){
+    pause();
+    remaining = durationSec;
+    onTick(remaining);
+  }
+
+  function stop(finished=false){
+    running = false;
+    clearInterval(intId);
+    intId = null;
+    if(finished) remaining = 0;
+    onTick(remaining);
+  }
+
+  function isRunning(){ return running; }
+  function getRemaining(){ return remaining; }
+
+  return { start, pause, reset, stop, isRunning, getRemaining };
+}
+
+function formatTime(sec){
+  const m = Math.floor(sec/60);
+  const s = sec % 60;
+  return `${pad2(m)}:${pad2(s)}`;
+}
+
+/* =========================================================
+   END POPUP
+   ========================================================= */
+const endBanner = document.getElementById('endBanner');
+const endText = document.getElementById('endText');
+const againBtn = document.getElementById('againBtn');
+const nextBtnPop = document.getElementById('nextBtnPop');
+
+let endAgainHandler = null;
+let endNextHandler = null;
+
+function showEndPopup(text, onAgain, onNext){
+  endText.innerHTML = text;
+  endBanner.style.display = 'flex';
+  endAgainHandler = onAgain;
+  endNextHandler = onNext;
+}
+function hideEndPopup(){
+  endBanner.style.display = 'none';
+  endAgainHandler = null;
+  endNextHandler = null;
+}
+againBtn.onclick = ()=>{
+  hideEndPopup();
+  if(endAgainHandler) endAgainHandler();
+};
+nextBtnPop.onclick = ()=>{
+  hideEndPopup();
+  if(endNextHandler) endNextHandler();
+};
+
+/* =========================================================
+   EX 1: Lauschter a klick (60 rounds, 6 options)
+   - correct increments + advances
+   - incorrect: flash only (skips)
+   ========================================================= */
+const grid1 = document.getElementById('grid1');
+const t1El = document.getElementById('t1');
+const s1El = document.getElementById('s1');
+const r1El = document.getElementById('r1');
+const start1Btn = document.getElementById('start1');
+const pause1Btn = document.getElementById('pause1');
+const replay1Btn = document.getElementById('replay1');
+
+let timer1 = makeTimer(60, (sec)=> t1El.textContent = formatTime(sec), ()=> finish1());
+let score1 = 0;
+let roundIdx1 = 0;
+let rounds1 = [];
+let currentRound1 = null;
+let g1Locked = true;
+
+function buildRounds1(){
+  // 60 rounds from SCHOOL_ITEMS (audio+images exist)
+  rounds1 = [];
+  for(let i=0;i<60;i++){
+    const target = SCHOOL_ITEMS[Math.floor(Math.random()*SCHOOL_ITEMS.length)];
+    const pool = SCHOOL_ITEMS.filter(x=> x.id !== target.id);
+    shuffle(pool);
+    const options = shuffle([target, ...pool.slice(0,5)]);
+    rounds1.push({ target, options });
+  }
+  roundIdx1 = 0;
+}
+
+function renderRound1(){
+  grid1.innerHTML = "";
+  if(roundIdx1 >= rounds1.length){
+    // No more rounds => just finish early
+    finish1(true);
+    return;
+  }
+  currentRound1 = rounds1[roundIdx1];
+  r1El.textContent = String(roundIdx1);
+
+  currentRound1.options.forEach(opt=>{
+    const b = document.createElement('button');
+    b.className = 'imgToken';
+    const img = document.createElement('img');
+    img.src = opt.img;
+    img.alt = opt.label;
+    b.appendChild(img);
+
+    b.onclick = ()=>{
+      if(g1Locked) return;
+      const ok = opt.id === currentRound1.target.id;
+      flash(b, ok);
+      if(ok){
+        score1 += 1;
+        s1El.textContent = String(score1);
+        roundIdx1 += 1;
+        setTimeout(()=>{
+          renderRound1();
+          playSound(currentRound1?.target?.audio);
+        }, 240);
+      }
+      // if incorrect: do nothing else (kids try again)
+    };
+
+    grid1.appendChild(b);
+  });
+
+  // auto play target audio (after user start gesture)
+  playSound(currentRound1.target.audio);
+  replay1Btn.disabled = false;
+}
+
+function startG1(){
+  score1 = 0; s1El.textContent = "0";
+  buildRounds1();
+  g1Locked = false;
+  roundIdx1 = 0;
+  r1El.textContent = "0";
+  timer1.reset();
+  timer1.start();
+
+  start1Btn.disabled = true;
+  pause1Btn.disabled = false;
+  pause1Btn.textContent = "Pause";
+  replay1Btn.disabled = false;
+
+  renderRound1();
+}
+
+function togglePause1(){
+  if(g1Locked) return;
+  if(timer1.isRunning()){
+    timer1.pause();
+    pause1Btn.textContent = "Weider";
+  }else{
+    timer1.start();
+    pause1Btn.textContent = "Pause";
+  }
+}
+
+function finish1(early=false){
+  g1Locked = true;
+  timer1.stop(true);
+  pause1Btn.disabled = true;
+  replay1Btn.disabled = true;
+  start1Btn.disabled = false;
+
+  const doneRounds = Math.min(roundIdx1, 60);
+  const txt = early
+    ? `⏱️ Übung 1 fäerdeg!<br/>✅ Richteg: <b>${score1}</b>`
+    : `⏱️ Zäit eriwwer!<br/>Übung 1<br/>✅ Richteg: <b>${score1}</b><br/><span style="opacity:.85">Ronnen: ${doneRounds}/60</span>`;
+
+  showEndPopup(
+    txt,
+    ()=>{ startG1(); },
+    ()=>{ showPage(1); }
+  );
+}
+
+start1Btn.onclick = startG1;
+pause1Btn.onclick = togglePause1;
+replay1Btn.onclick = ()=>{ if(currentRound1 && !g1Locked) playSound(currentRound1.target.audio); };
+
+/* =========================================================
+   RENDER HELPERS (tiles)
+   ========================================================= */
+function makeNumberNode(nText){
+  const wrap = document.createElement('div');
+  wrap.className = 'tile';
+  const num = document.createElement('div');
+  num.className = 'tileNum';
+  num.textContent = nText;
+  wrap.appendChild(num);
+  return wrap;
+}
+
+function makeToyNode(emoji, label){
+  const outer = document.createElement('div');
+  outer.style.width = "90%";
+  outer.style.height = "90%";
+  outer.style.display = "grid";
+  outer.style.placeItems = "center";
+
+  const tile = document.createElement('div');
+  tile.className = 'tile';
+  const em = document.createElement('div');
+  em.className = 'tileEmoji';
+  em.textContent = emoji;
+
+  const lab = document.createElement('div');
+  lab.className = 'tileLabel';
+  lab.textContent = label;
+
+  tile.appendChild(em);
+  outer.appendChild(tile);
+  outer.appendChild(lab);
+  return outer;
+}
+
+function makeColourNode(hex, label){
+  const outer = document.createElement('div');
+  outer.style.width = "90%";
+  outer.style.height = "90%";
+  outer.style.display = "grid";
+  outer.style.placeItems = "center";
+
+  const tile = document.createElement('div');
+  tile.className = 'tile';
+
+  const sw = document.createElement('div');
+  sw.style.width = "78%";
+  sw.style.height = "78%";
+  sw.style.borderRadius = "18px";
+  sw.style.background = hex;
+  sw.style.border = "8px solid rgba(0,0,0,.10)";
+  if(hex.toLowerCase() === "#ffffff"){
+    sw.style.border = "8px solid rgba(0,0,0,.22)";
+  }
+
+  const lab = document.createElement('div');
+  lab.className = 'tileLabel';
+  lab.textContent = label;
+
+  tile.appendChild(sw);
+  outer.appendChild(tile);
+  outer.appendChild(lab);
+  return outer;
+}
+
+/* =========================================================
+   EX 2: Wat ass dat? (teacher marks, auto next)
+   - only correct increments
+   ========================================================= */
+const t2El = document.getElementById('t2');
+const s2El = document.getElementById('s2');
+const start2Btn = document.getElementById('start2');
+const pause2Btn = document.getElementById('pause2');
+const ok2Btn = document.getElementById('ok2');
+const bad2Btn = document.getElementById('bad2');
+const prompt2 = document.getElementById('prompt2');
+
+let timer2 = makeTimer(60, (sec)=> t2El.textContent = formatTime(sec), ()=> finish2());
+let score2 = 0;
+let g2Locked = true;
+let bag2 = [];
+let current2 = null;
+
+function refill2(){
+  bag2 = shuffle([...BANK2]);
+}
+function showNext2(){
+  if(bag2.length === 0) refill2();
+  current2 = bag2.pop();
+  prompt2.innerHTML = "";
+
+  // show card
+  if(current2.type === 'img'){
+    const img = document.createElement('img');
+    img.src = current2.img;
+    img.alt = current2.label;
+    prompt2.appendChild(img);
+    // optional: play audio if exists (some have)
+    // (keep silent by default for assessment)
+  }else if(current2.type === 'num'){
+    prompt2.appendChild(makeNumberNode(current2.label));
+  }else if(current2.type === 'col'){
+    prompt2.appendChild(makeColourNode(current2.hex, current2.label));
+  }else if(current2.type === 'toy'){
+    prompt2.appendChild(makeToyNode(current2.emoji, current2.label));
+  }
+}
+
+function startG2(){
+  score2 = 0; s2El.textContent = "0";
+  g2Locked = false;
+
+  timer2.reset();
+  timer2.start();
+
+  start2Btn.disabled = true;
+  pause2Btn.disabled = false;
+  pause2Btn.textContent = "Pause";
+  ok2Btn.disabled = false;
+  bad2Btn.disabled = false;
+
+  refill2();
+  showNext2();
+}
+
+function togglePause2(){
+  if(g2Locked) return;
+  if(timer2.isRunning()){
+    timer2.pause();
+    pause2Btn.textContent = "Weider";
+  }else{
+    timer2.start();
+    pause2Btn.textContent = "Pause";
+  }
+}
+
+function mark2(isCorrect){
+  if(g2Locked) return;
+  flash(isCorrect ? ok2Btn : bad2Btn, isCorrect);
+  if(isCorrect){
+    score2 += 1;
+    s2El.textContent = String(score2);
+  }
+  setTimeout(showNext2, 180);
+}
+
+function finish2(){
+  g2Locked = true;
+  timer2.stop(true);
+
+  pause2Btn.disabled = true;
+  ok2Btn.disabled = true;
+  bad2Btn.disabled = true;
+  start2Btn.disabled = false;
+
+  showEndPopup(
+    `⏱️ Zäit eriwwer!<br/>Übung 2<br/>✅ Richteg: <b>${score2}</b>`,
+    ()=>{ startG2(); },
+    ()=>{ showPage(2); }
+  );
+}
+
+start2Btn.onclick = startG2;
+pause2Btn.onclick = togglePause2;
+ok2Btn.onclick = ()=> mark2(true);
+bad2Btn.onclick = ()=> mark2(false);
+
+/* =========================================================
+   EX 3: Lies de Saz (noun + "ass" + colour) teacher marks
+   ========================================================= */
+const t3El = document.getElementById('t3');
+const s3El = document.getElementById('s3');
+const start3Btn = document.getElementById('start3');
+const pause3Btn = document.getElementById('pause3');
+const ok3Btn = document.getElementById('ok3');
+const bad3Btn = document.getElementById('bad3');
+const noun3Box = document.getElementById('noun3');
+const col3Box = document.getElementById('col3');
+
+let timer3 = makeTimer(60, (sec)=> t3El.textContent = formatTime(sec), ()=> finish3());
+let score3 = 0;
+let g3Locked = true;
+let bagN3 = [];
+let bagC3 = [];
+let current3 = { noun:null, col:null };
+
+function refill3(){
+  bagN3 = shuffle([...NOUNS3]);
+  bagC3 = shuffle([...COLOURS]);
+}
+function showNext3(){
+  if(bagN3.length === 0) bagN3 = shuffle([...NOUNS3]);
+  if(bagC3.length === 0) bagC3 = shuffle([...COLOURS]);
+
+  current3.noun = bagN3.pop();
+  current3.col = bagC3.pop();
+
+  // noun
+  noun3Box.innerHTML = "";
+  if(current3.noun.type === 'img'){
+    const img = document.createElement('img');
+    img.src = current3.noun.img;
+    img.alt = current3.noun.label;
+    img.style.width = "85%";
+    img.style.height = "85%";
+    img.style.objectFit = "contain";
+    noun3Box.appendChild(img);
+  }else if(current3.noun.type === 'toy'){
+    // emoji tile (no label in sentence)
+    const tile = document.createElement('div');
+    tile.className = "tile";
+    const em = document.createElement('div');
+    em.className = "tileEmoji";
+    em.textContent = current3.noun.emoji;
+    tile.appendChild(em);
+    noun3Box.appendChild(tile);
+  }
+
+  // colour
+  col3Box.innerHTML = "";
+  const sw = document.createElement('div');
+  sw.className = "colorSwatch";
+  sw.style.background = current3.col.hex;
+  if(current3.col.hex.toLowerCase() === "#ffffff"){
+    sw.style.border = "10px solid rgba(0,0,0,.25)";
+  }
+  col3Box.appendChild(sw);
+}
+
+function startG3(){
+  score3 = 0; s3El.textContent = "0";
+  g3Locked = false;
+
+  timer3.reset();
+  timer3.start();
+
+  start3Btn.disabled = true;
+  pause3Btn.disabled = false;
+  pause3Btn.textContent = "Pause";
+  ok3Btn.disabled = false;
+  bad3Btn.disabled = false;
+
+  refill3();
+  showNext3();
+}
+
+function togglePause3(){
+  if(g3Locked) return;
+  if(timer3.isRunning()){
+    timer3.pause();
+    pause3Btn.textContent = "Weider";
+  }else{
+    timer3.start();
+    pause3Btn.textContent = "Pause";
+  }
+}
+
+function mark3(isCorrect){
+  if(g3Locked) return;
+  flash(isCorrect ? ok3Btn : bad3Btn, isCorrect);
+  if(isCorrect){
+    score3 += 1;
+    s3El.textContent = String(score3);
+  }
+  setTimeout(showNext3, 180);
+}
+
+function finish3(){
+  g3Locked = true;
+  timer3.stop(true);
+
+  pause3Btn.disabled = true;
+  ok3Btn.disabled = true;
+  bad3Btn.disabled = true;
+  start3Btn.disabled = false;
+
+  showEndPopup(
+    `⏱️ Zäit eriwwer!<br/>Übung 3<br/>✅ Richteg: <b>${score3}</b><br/><span style="opacity:.85">Fäerdeg 🎉</span>`,
+    ()=>{ startG3(); },
+    ()=>{ showPage(0); }
+  );
+}
+
+start3Btn.onclick = startG3;
+pause3Btn.onclick = togglePause3;
+ok3Btn.onclick = ()=> mark3(true);
+bad3Btn.onclick = ()=> mark3(false);
+
+/* =========================================================
+   INIT
+   ========================================================= */
+function init(){
+  // Prep exercise 1 UI
+  buildRounds1();
+
+  // Prebuild grid buttons once (we re-render each round to ensure exactly 6 choices)
+  // So nothing else here.
+
+  showPage(0);
+  updateNav();
+}
+init();
+</script>
+
+</body>
+</html>
